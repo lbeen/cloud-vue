@@ -1,106 +1,72 @@
 <template>
-	<el-aside class="layout-aside" :class="setCollapseWidth" v-if="clientWidth > 1000">
-		<Logo v-if="setShowLogo" />
-		<el-scrollbar class="flex-auto" ref="layoutAsideRef">
-			<Vertical :menuList="menuList" :class="setCollapseWidth" />
-		</el-scrollbar>
-	</el-aside>
-	<el-drawer :visible.sync="getThemeConfig.isCollapse" :with-header="false" direction="ltr" size="220px" v-else>
-		<el-aside class="layout-aside w100 h100">
-			<Logo v-if="setShowLogo" />
-			<el-scrollbar class="flex-auto" ref="layoutAsideRef">
-				<Vertical :menuList="menuList" />
-			</el-scrollbar>
-		</el-aside>
-	</el-drawer>
+<!--    <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">-->
+<!--        <el-radio-button :label="false">expand</el-radio-button>-->
+<!--        <el-radio-button :label="true">collapse</el-radio-button>-->
+<!--    </el-radio-group>-->
+    <el-menu
+        default-active="2"
+        class="el-menu-vertical-demo"
+        :collapse="isCollapse"
+        @open="handleOpen"
+        @close="handleClose"
+        active-text-color="#ffd04b"
+        background-color="#545c64"
+        text-color="#fff"
+    >
+        <el-sub-menu index="1">
+            <template #title>
+                <el-icon><location /></el-icon>
+                <span>Navigator One</span>
+            </template>
+            <el-menu-item-group>
+                <template #title><span>Group One</span></template>
+                <el-menu-item index="1-1">item one</el-menu-item>
+                <el-menu-item index="1-2">item two</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="Group Two">
+                <el-menu-item index="1-3">item three</el-menu-item>
+            </el-menu-item-group>
+            <el-sub-menu index="1-4">
+                <template #title><span>item four</span></template>
+                <el-menu-item index="1-4-1">item one</el-menu-item>
+            </el-sub-menu>
+        </el-sub-menu>
+        <el-menu-item index="2">
+            <el-icon><icon-menu /></el-icon>
+            <template #title>Navigator Two</template>
+        </el-menu-item>
+        <el-menu-item index="3" disabled>
+            <el-icon><document /></el-icon>
+            <template #title>Navigator Three</template>
+        </el-menu-item>
+        <el-menu-item index="4">
+            <el-icon><setting /></el-icon>
+            <template #title>Navigator Four</template>
+        </el-menu-item>
+    </el-menu>
 </template>
 
-<script>
-import Vertical from '@/layout/navMenu/vertical.vue';
-import Logo from '@/layout/logo/index.vue';
-export default {
-	name: 'layoutAside',
-	components: { Vertical, Logo },
-	data() {
-		return {
-			menuList: [],
-			clientWidth: '',
-		};
-	},
-	computed: {
-		// 设置左侧菜单的具体宽度
-		setCollapseWidth() {
-			// let { layout, isCollapse } = this.$store.state.themeConfig.themeConfig;
-			// let asideBrColor = '';
-			// layout === 'classic' || layout === 'columns' ? (asideBrColor = 'layout-el-aside-br-color') : '';
-            //
-			// if (layout === 'columns') {
-			// 	// 分栏布局，菜单收起时宽度给 1px
-			// 	if (isCollapse) {
-			// 		return ['layout-aside-width1', asideBrColor];
-			// 	} else {
-			// 		return ['layout-aside-width-default', asideBrColor];
-			// 	}
-			// } else {
-			// 	// 其它布局给 64px
-			// 	if (isCollapse) {
-			// 		return ['layout-aside-width64', asideBrColor];
-			// 	} else {
-			// 		return ['layout-aside-width-default', asideBrColor];
-			// 	}
-			// }
-		},
-		// 设置 logo 是否显示
-		setShowLogo() {
-			// let { layout, isShowLogo } = this.$store.state.themeConfig.themeConfig;
-			// return (isShowLogo && layout === 'defaults') || (isShowLogo && layout === 'columns');
-		},
-		// 获取布局配置信息
-		getThemeConfig() {
-			// return this.$store.state.themeConfig.themeConfig;
-		},
-	},
-	created() {
-		this.initMenuFixed(document.body.clientWidth);
-		this.setFilterRoutes();
-		// this.bus.$on('setSendColumnsChildren', (res) => {
-		// 	this.menuList = res.children;
-		// });
-		// this.bus.$on('layoutMobileResize', (res) => {
-		// 	this.initMenuFixed(res.clientWidth);
-		// });
-		// // 菜单滚动条监听
-		// this.bus.$on('updateElScrollBar', () => {
-		// 	setTimeout(() => {
-		// 		this.$refs.layoutAsideRef.update();
-		// 	}, 300);
-		// });
-	},
-	methods: {
-		// 设置/过滤路由（非静态路由/是否显示在菜单中）
-		setFilterRoutes() {
-			// if (this.$store.state.themeConfig.themeConfig.layout === 'columns') return false;
-			// this.menuList = this.filterRoutesFun(this.$store.state.routesList.routesList);
-		},
-		// 设置/过滤路由 递归函数
-		filterRoutesFun(arr) {
-			return arr
-				.filter((item) => !item.meta.isHide)
-				.map((item) => {
-					item = Object.assign({}, item);
-					if (item.children) item.children = this.filterRoutesFun(item.children);
-					return item;
-				});
-		},
-		// 设置菜单导航是否固定（移动端）
-		initMenuFixed(clientWidth) {
-			this.clientWidth = clientWidth;
-		},
-	},
-	// 页面销毁时
-	destroyed() {
-		// 取消菜单滚动条监听
-		this.bus.$off('updateElScrollBar', () => {});
-	},
-};
+<script setup>
+import { ref } from 'vue'
+// import {
+//     Document,
+//     Menu as IconMenu,
+//     Location,
+//     Setting,
+// } from '@element-plus/icons-vue'
+
+const isCollapse = ref(false)
+const handleOpen = (key, keyPath) => {
+    console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+    console.log(key, keyPath)
+}
 </script>
+
+<style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    height: 100%;
+}
+</style>

@@ -19,12 +19,19 @@ const dynamicRoutes = [
             isKeepAlive: true,
         },
         children: [{
-            path: '/index',
-            name: 'index',
+            "path": "/index",
+            "name": "index",
             component: () => import('@/views/index.vue'),
-            meta: {
-                title: '首页',
-            },
+            "meta": {
+                "title": "message.router.home",
+                "isLink": "",
+                "isHide": false,
+                "isKeepAlive": true,
+                "isAffix": true,
+                "isIframe": false,
+                "roles": ["admin", "common"],
+                "icon": "iconfont icon-shouye"
+            }
         }],
     }
 ]
