@@ -12,6 +12,7 @@
         active-text-color="#ffd04b"
         background-color="#545c64"
         text-color="#fff"
+        style="height: 100vh"
     >
         <el-sub-menu index="1">
             <template #title>

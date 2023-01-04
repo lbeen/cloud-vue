@@ -6,7 +6,7 @@
                     <component :is="themeConfig.isCollapseMenu ? 'expand' : 'fold'" style="width: 18px;cursor: pointer;"
                                @click="changeMenuCollapse"/>
                 </div>
-                <active-menu-tags/>
+                <active-menu-tags style="margin-left: 5px"/>
             </div>
             <div class="layout-header-right">
                 <div style="width: 80px;text-align: center">
