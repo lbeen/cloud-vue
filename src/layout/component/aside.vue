@@ -6,7 +6,7 @@
     <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
-        :collapse="isCollapse"
+        :collapse="themeConfig.isCollapseMenu"
         @open="handleOpen"
         @close="handleClose"
         active-text-color="#ffd04b"
@@ -47,7 +47,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import {storeToRefs} from 'pinia'
+import {useThemeConfig} from '@/stores/themeConfig'
+import {watch} from 'vue'
 // import {
 //     Document,
 //     Menu as IconMenu,
@@ -55,13 +57,22 @@ import { ref } from 'vue'
 //     Setting,
 // } from '@element-plus/icons-vue'
 
-const isCollapse = ref(false)
+const {themeConfig} = storeToRefs(useThemeConfig())
 const handleOpen = (key, keyPath) => {
     console.log(key, keyPath)
 }
 const handleClose = (key, keyPath) => {
     console.log(key, keyPath)
 }
+watch(
+    themeConfig.value,
+    () => {
+        console.log('watch', themeConfig.value.isCollapseMenu)
+    },
+    {
+        immediate: true,
+    }
+);
 </script>
 
 <style>

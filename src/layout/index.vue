@@ -1,19 +1,19 @@
 <template>
     <el-container class="layout-container">
-        <Asides/>
-        <el-container className="flex-center layout-backtop">
-<!--            <Headers v-if="isFixedHeader"/>-->
+        <asides/>
+        <el-container>
+            <headers/>
 <!--            <el-scrollbar ref="layoutDefaultsScrollbarRef">-->
 <!--                <Headers v-if="!isFixedHeader"/>-->
 <!--                <Mains/>-->
 <!--            </el-scrollbar>-->
         </el-container>
-<!--        <el-backtop target=".layout-backtop .el-scrollbar__wrap"></el-backtop>-->
     </el-container>
 </template>
 
 <script setup>
 import Asides from '@/layout/component/aside.vue'
+import Headers from '@/layout/component/headers.vue'
 </script>
 <style scoped>
     .layout-container{
