@@ -1,5 +1,8 @@
 <template>
-    <div class="vue-particles"/>
+<!--    <div class="vue-particles"/>-->
+    <div>
+        <h1>测试</h1>
+    </div>
 </template>
 
 <style scoped>

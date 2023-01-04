@@ -39,7 +39,7 @@
 import {storeToRefs} from 'pinia'
 import {useThemeConfig} from '@/stores/themeConfig'
 import {ref} from 'vue'
-import ActiveMenuTags from '@/layout/component/ActiveMenuTags.vue'
+import ActiveMenuTags from '@/layout/component/active-menu-tags.vue'
 
 const {themeConfig} = storeToRefs(useThemeConfig())
 const changeMenuCollapse = () => themeConfig.value.isCollapseMenu = !themeConfig.value.isCollapseMenu
@@ -50,7 +50,7 @@ const breadcrumbList = ref([{}])
 .layout-header {
     padding: 0;
     width: 100%;
-    height: auto;
+    height: 50px;
 }
 
 .layout-header-div {
@@ -66,6 +66,8 @@ const breadcrumbList = ref([{}])
     height: inherit;
     display: flex;
     align-items: center;
+    width: 1px;
+    margin-right: 100px;
 }
 
 .layout-header-right {
