@@ -12,7 +12,7 @@
                 <div style="width: 80px;text-align: center">
                     <el-dropdown>
                         <span>
-                            admin
+                            {{ userInfo.username }}
                           <el-icon>
                             <arrow-down/>
                           </el-icon>
@@ -29,22 +29,70 @@
                         </template>
                     </el-dropdown>
                 </div>
-
             </div>
         </div>
     </el-header>
+    <el-dialog v-model="showChangePassword" title="修改密码" width="300px">
+        <el-form :rules="formData.rules" :model="formData.data" ref="form">
+            <el-form-item label="账号" prop="username">
+                <el-input type="text" v-model="formData.data.username" size="large" readonly></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input type="password" v-model.trim="formData.data.password" size="large"></el-input>
+            </el-form-item>
+            <el-form-item style="margin-top: 10px">
+                <el-button style="width: 100%" type="primary" @click="submit" size="large">修改</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
 </template>
 
 <script setup>
-import {storeToRefs} from 'pinia'
+import {reactive, ref} from 'vue'
 import {useThemeConfig} from '@/stores/themeConfig'
-import {ref} from 'vue'
+import {useAuth} from '@/stores/auth'
 import ActiveMenuTags from '@/layout/component/active-menu-tags.vue'
+import {changePassword} from '@/api/system/user'
 
-const {themeConfig} = storeToRefs(useThemeConfig())
-const changeMenuCollapse = () => themeConfig.value.isCollapseMenu = !themeConfig.value.isCollapseMenu
+const themeConfig = useThemeConfig()
+const changeMenuCollapse = () => themeConfig.isCollapseMenu = !themeConfig.isCollapseMenu
 
-const breadcrumbList = ref([{}])
+const auth = useAuth()
+const userInfo = auth.user || {}
+
+const logonOut = () => {
+    auth.removeToken()
+    window.location.href = '/login'
+}
+
+const showChangePassword = ref(false)
+const formData = reactive({
+    data: {
+        username: userInfo.username,
+        password: ''
+    },
+    rules: {
+        username: [{
+            required: true,
+            message: '用户名不能为空',
+            trigger: 'blur'
+        }],
+        password: [{
+            required: true,
+            message: '密码不能为空',
+            trigger: 'blur'
+        }]
+    }
+})
+
+const form = ref(null)
+const submit = () => {
+    form.value.validate(valid => {
+        if (valid) {
+            changePassword(formData.data, () => showChangePassword.value = false)
+        }
+    })
+}
 </script>
 <style scoped>
 .layout-header {
@@ -57,7 +105,6 @@ const breadcrumbList = ref([{}])
     height: 50px;
     display: flex;
     align-items: center;
-    /*background: var(--next-bg-topBar);*/
     border-bottom: 1px solid #f1f2f3;
 }
 

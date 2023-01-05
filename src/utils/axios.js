@@ -1,7 +1,9 @@
 import axios from 'axios'
-import {checkLoginExpire, getToken, getUserInfo, refreshLastTime, removeToken, setToken} from './auth'
 import router from '@/router'
 import Tips from '@/utils/Tips'
+import {useAuth} from '@/stores/auth'
+
+const auth = useAuth()
 
 const instance = axios.create({
     baseURL: '/api',
@@ -9,7 +11,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-        config.headers.token = getToken() || ''
+        config.headers.token = auth.token || ''
         return config
     },
     error => Promise.reject(error)
@@ -17,14 +19,14 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
     const code = response.data.code
     if (code === 401) {
-        if (checkLoginExpire()) {
+        if (auth.checkLoginExpire()) {
             jumpToLogin()
             return
         }
-        return instance.post('/system/refreshToken', getUserInfo()).then(response2 => {
+        return instance.post('/system/refreshToken', auth.user).then(response2 => {
             const token = response2.data.data
             if (token) {
-                setToken(token)
+                auth.token = token
                 response.config.headers.token = token
                 return instance(response.config)
             }
@@ -33,7 +35,7 @@ instance.interceptors.response.use(response => {
         }).catch(jumpToLogin)
     }
 
-    refreshLastTime(response.headers.date)
+    auth.lastTime = response.headers.date
     return Promise.resolve(response)
 }, error => {
     const status = error.response.status
@@ -45,7 +47,7 @@ instance.interceptors.response.use(response => {
 })
 
 function jumpToLogin() {
-    removeToken()
+    auth.removeToken()
     Tips.alert('未登录或者登录过期，请重新登录', () => router.replace('/login'))
 }
 

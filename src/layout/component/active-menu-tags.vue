@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar view-class="tags-div" height="50px">
-        <el-tag size="large"
+        <el-tag
                 v-for="tag in tags"
                 :key="tag.title"
                 :closable="tag.closable"

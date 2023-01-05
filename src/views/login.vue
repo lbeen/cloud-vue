@@ -5,14 +5,15 @@
                 <div class="login-main">
                     <h4 class="login-title">MES</h4>
                     <el-form class="el-form login-form" :rules="formData.rules" :model="formData.data" ref="form">
-                        <el-form-item  prop="username">
+                        <el-form-item prop="username">
                             <el-input v-model="formData.data.username" placeholder="用户名" size="large"/>
                         </el-form-item>
-                        <el-form-item  prop="password">
-                            <el-input v-model="formData.data.password" placeholder="用户名" size="large" type="password"/>
+                        <el-form-item prop="password">
+                            <el-input v-model="formData.data.password" placeholder="用户名" size="large"
+                                      type="password"/>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" class="login-submit" size="large" @click="submit" >
+                            <el-button type="primary" class="login-submit" size="large" @click="submit">
                                 <span>登录</span>
                             </el-button>
                         </el-form-item>
@@ -27,8 +28,10 @@
 
 <script setup>
 import {doLogin} from '@/api/system/login'
-import {setToken, setUserInfo} from '@/utils/auth'
 import {reactive, ref} from 'vue'
+import {useAuth} from '@/stores/auth'
+
+const auth = useAuth()
 
 const formData = reactive({
     data: {
@@ -54,9 +57,9 @@ const submit = () => {
     form.value.validate(valid => {
         if (valid) {
             doLogin(formData.data, data => {
-                setToken(data.token)
-                setUserInfo(data.user)
-                window.location.href = '/'
+                auth.token = data.token
+                auth.user = data.user
+                window.location.href = '/index'
             })
         }
     })
