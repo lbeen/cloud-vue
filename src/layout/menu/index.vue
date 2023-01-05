@@ -25,8 +25,8 @@
 </template>
 
 <script setup>
-import Asides from '@/layout/component/aside.vue'
-import Headers from '@/layout/component/headers.vue'
+import Asides from '@/layout/menu/component/aside.vue'
+import Headers from '@/layout/menu/component/headers.vue'
 </script>
 <style scoped>
     .layout-container{

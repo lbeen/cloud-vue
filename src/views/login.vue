@@ -30,6 +30,8 @@
 import {doLogin} from '@/api/system/login'
 import {reactive, ref} from 'vue'
 import {useAuth} from '@/stores/auth'
+import {addMenuRoutes} from '@/router/menu-routes'
+import {useRouter} from 'vue-router'
 
 const auth = useAuth()
 
@@ -52,6 +54,9 @@ const formData = reactive({
     }
 })
 
+const router = useRouter()
+console.log(router.options.routes)
+
 const form = ref(null)
 const submit = () => {
     form.value.validate(valid => {
@@ -59,7 +64,11 @@ const submit = () => {
             doLogin(formData.data, data => {
                 auth.token = data.token
                 auth.user = data.user
-                window.location.href = '/index'
+                auth.menus = data.menus
+
+                addMenuRoutes(router, data.menus)
+                console.log(router.options.routes)
+                // window.location.href = '/index'
             })
         }
     })
