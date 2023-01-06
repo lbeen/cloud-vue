@@ -1,8 +1,4 @@
 <template>
-    <!--    <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">-->
-    <!--        <el-radio-button :label="false">expand</el-radio-button>-->
-    <!--        <el-radio-button :label="true">collapse</el-radio-button>-->
-    <!--    </el-radio-group>-->
     <el-menu
         default-active="2"
         class="el-menu-vertical-demo"
@@ -14,6 +10,13 @@
         text-color="#fff"
         style="height: 100vh"
     >
+        <template v-for="menu in auth.menus">
+
+        </template>
+        <el-sub-menu v-for="menu in auth.menus">
+
+        </el-sub-menu>
+
         <el-sub-menu index="1">
             <template #title>
                 <el-icon>
@@ -56,14 +59,18 @@
 </template>
 
 <script setup>
-import {useThemeConfig} from '@/stores/themeConfig'
+import {useThemeConfig} from '@/stores/theme-config'
+import {useAuth} from '@/stores/auth'
 
 const themeConfig = useThemeConfig()
+const auth = useAuth()
+
+
 const handleOpen = (key, keyPath) => {
-    console.log(key, keyPath)
+    // console.log(key, keyPath)
 }
 const handleClose = (key, keyPath) => {
-    console.log(key, keyPath)
+    // console.log(key, keyPath)
 }
 </script>
 

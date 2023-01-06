@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import {useThemeConfig} from '@/stores/themeConfig'
+import {useThemeConfig} from '@/stores/theme-config'
 
 const EXPIRE_DURATION = 1800000
 export const useAuth = defineStore('auth', {

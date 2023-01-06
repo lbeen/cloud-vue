@@ -1,48 +1,28 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import store from '@/stores/store'
 import {useAuth} from '@/stores/auth'
-import {addMenuRoutes} from '@/router/menu-routes'
-
-const auth = useAuth(store)
+import {getMenusRoutes} from '@/stores/store'
 
 // 定义静态路由
 const staticRoutes = [{
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login.vue'),
+    component: () => import('@/views/system/login.vue'),
     meta: {
         title: '登录',
     },
 }]
-// const dynamicRoutes = [
-//     {
-//         path: '/',
-//         name: '/',
-//         component: () => import('@/layout/menu/index.vue'),
-//         // redirect: '/home',
-//         meta: {
-//             isKeepAlive: true,
-//         },
-//         children: [{
-//             "path": "/index",
-//             "name": "index",
-//             component: () => import('@/views/index.vue'),
-//             "meta": {
-//                 "title": "message.router.home",
-//                 "isLink": "",
-//                 "isHide": false,
-//                 "isKeepAlive": true,
-//                 "isAffix": true,
-//                 "isIframe": false,
-//                 "roles": ["admin", "common"],
-//                 "icon": "iconfont icon-shouye"
-//             }
-//         }],
-//     }
-// ]
+
+const menuRoutes = getMenusRoutes()
+const dynamicRoutes = [{
+    path: '/',
+    name: '',
+    component: () => import('@/layout/menu/menu-layout.vue'),
+    children: menuRoutes
+}]
+
 const routers = [
     ...staticRoutes,
-    // ...dynamicRoutes
+    ...dynamicRoutes
 ]
 const router = createRouter({
     history: createWebHistory(),
@@ -50,7 +30,7 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-
+    const auth = useAuth()
     if (to.path === '/login') {
         next()
         return
@@ -59,8 +39,6 @@ router.beforeEach((to, from, next) => {
         next('/login')
         return
     }
-
-    addMenuRoutes(router)
     next()
 })
 

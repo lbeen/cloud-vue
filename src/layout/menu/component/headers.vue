@@ -49,7 +49,7 @@
 
 <script setup>
 import {reactive, ref} from 'vue'
-import {useThemeConfig} from '@/stores/themeConfig'
+import {useThemeConfig} from '@/stores/theme-config'
 import {useAuth} from '@/stores/auth'
 import ActiveMenuTags from '@/layout/menu/component/active-menu-tags.vue'
 import {changePassword} from '@/api/system/user'
