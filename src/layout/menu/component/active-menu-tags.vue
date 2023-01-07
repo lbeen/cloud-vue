@@ -24,7 +24,12 @@ import {useRouter} from 'vue-router'
 const activeTags = useThemeConfig().activeTags
 const router = useRouter()
 
-const tagMouseenter = tag => tag.closable = true
+const tagMouseenter = tag => {
+    if (activeTags.length === 1) {
+        return
+    }
+    tag.closable = true
+}
 const tagMouseleave = tag => tag.closable = false
 const show = tag => {
     for (const activeTag of activeTags) {
@@ -33,9 +38,6 @@ const show = tag => {
     router.replace(tag.path)
 }
 const closeTag = index => {
-    if (activeTags.length === 1) {
-        return
-    }
     if (index < activeTags.length - 1) {
         router.replace(activeTags[index + 1].path)
     } else {
