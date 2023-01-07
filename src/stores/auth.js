@@ -65,7 +65,8 @@ function addMenuAndRoute(routes, menu) {
             name: menu.name,
             component: () => import('..' + menu.component),
             meta: {
-                title: menu.title
+                title: menu.title,
+                keepAlive: menu.keepAlive
             }
         })
         return
