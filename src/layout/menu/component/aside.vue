@@ -1,82 +1,41 @@
 <template>
-    <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        :collapse="themeConfig.isCollapseMenu"
-        @open="handleOpen"
-        @close="handleClose"
-        active-text-color="#ffd04b"
-        background-color="#545c64"
-        text-color="#fff"
-        style="height: 100vh"
-    >
-        <template v-for="menu in auth.menus">
-
-        </template>
-        <el-sub-menu v-for="menu in auth.menus">
-
-        </el-sub-menu>
-
-        <el-sub-menu index="1">
+    <el-menu router :default-active="defaultActive" :collapse="themeConfig.isCollapseMenu" active-text-color="#ffd04b"
+             background-color="#545c64" text-color="#fff">
+        <el-menu-item index="/index">
+            <el-icon>
+                <house/>
+            </el-icon>
             <template #title>
-                <el-icon>
-                    <location/>
-                </el-icon>
-                <span>Navigator One</span>
+                <span>主页</span>
             </template>
-            <el-menu-item-group>
-                <template #title><span>Group One</span></template>
-                <el-menu-item index="1-1">item one</el-menu-item>
-                <el-menu-item index="1-2">item two</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group Two">
-                <el-menu-item index="1-3">item three</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="1-4">
-                <template #title><span>item four</span></template>
-                <el-menu-item index="1-4-1">item one</el-menu-item>
-            </el-sub-menu>
-        </el-sub-menu>
-        <el-menu-item index="2">
-            <el-icon>
-                <icon-menu/>
-            </el-icon>
-            <template #title>Navigator Two</template>
         </el-menu-item>
-        <el-menu-item index="3" disabled>
-            <el-icon>
-                <document/>
-            </el-icon>
-            <template #title>Navigator Three</template>
-        </el-menu-item>
-        <el-menu-item index="4">
-            <el-icon>
-                <setting/>
-            </el-icon>
-            <template #title>Navigator Four</template>
-        </el-menu-item>
+        <sub-menu v-for="menu in auth.menus" :menu="menu"/>
     </el-menu>
 </template>
 
 <script setup>
 import {useThemeConfig} from '@/stores/theme-config'
 import {useAuth} from '@/stores/auth'
+import SubMenu from '@/layout/menu/component/sub-menu.vue'
+import {useRouter} from 'vue-router'
 
 const themeConfig = useThemeConfig()
 const auth = useAuth()
 
-
-const handleOpen = (key, keyPath) => {
-    // console.log(key, keyPath)
-}
-const handleClose = (key, keyPath) => {
-    // console.log(key, keyPath)
-}
+const router = useRouter()
+const defaultActive = router.currentRoute.value.fullPath
 </script>
 
-<style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+<style scoped>
+.el-menu {
+    height: 100vh;
+}
+
+.el-menu:not(.el-menu--collapse) {
     width: 200px;
-    height: 100%;
+}
+
+.el-icon{
+    font-size: 14px;
 }
 </style>

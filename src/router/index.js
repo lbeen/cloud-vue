@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {useAuth} from '@/stores/auth'
-import {getMenusRoutes} from '@/stores/store'
+import {useAuth, getMenuRoute} from '@/stores/auth'
+import {useThemeConfig} from '@/stores/theme-config'
 
 // 定义静态路由
 const staticRoutes = [{
@@ -12,13 +12,8 @@ const staticRoutes = [{
     },
 }]
 
-const menuRoutes = getMenusRoutes()
-const dynamicRoutes = [{
-    path: '/',
-    name: '',
-    component: () => import('@/layout/menu/menu-layout.vue'),
-    children: menuRoutes
-}]
+const menuRoute = getMenuRoute()
+const dynamicRoutes = [menuRoute]
 
 const routers = [
     ...staticRoutes,
@@ -39,6 +34,11 @@ router.beforeEach((to, from, next) => {
         next('/login')
         return
     }
+
+    useThemeConfig().addTag({
+        path:to.fullPath,
+        title:to.meta.title
+    })
     next()
 })
 

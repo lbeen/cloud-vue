@@ -30,9 +30,10 @@
 import {doLogin} from '@/api/system/login'
 import {reactive, ref} from 'vue'
 import {useAuth} from '@/stores/auth'
-import {useRouter} from 'vue-router'
+import {useThemeConfig} from '@/stores/theme-config'
 
 const auth = useAuth()
+const themeConfig = useThemeConfig()
 
 const formData = reactive({
     data: {
@@ -53,7 +54,6 @@ const formData = reactive({
     }
 })
 
-const router = useRouter()
 
 const form = ref(null)
 const submit = () => {
@@ -63,10 +63,7 @@ const submit = () => {
                 auth.token = data.token
                 auth.user = data.user
                 auth.menus = data.menus
-
-                // addMenuRoutes(router, data.menus)
-                // router.replace('/index')
-                window.location.href = '/index'
+                window.location.href = '/'
             })
         }
     })

@@ -1,7 +1,7 @@
 <template>
     <page-table :data-fun="dataFun" :param-fun="paramFun" query-on-load :row-click="rowClick">
         <template #query="scope">
-            <el-form inline class="demo-form-inline">
+            <el-form inline class="demo-form-inline" size="small">
                 <el-form-item label="时间">
                     <el-date-picker v-model="param.time" type="datetimerange" unlink-panels
                                     value-format="YYYY-MM-DD HH:mm:ss" range-separator="至"
@@ -39,17 +39,6 @@
         </template>
     </page-table>
 
-    <!--
-
-
-    createTime: '',
-    level: '',
-    server: '',
-    serverPort: '',
-    serverIP: '',
-    clientIP: '',
-    user: '',
-    content: ''-->
     <el-drawer v-model="isShowDetail" title="日志详情" size="50%">
         <el-descriptions :column="3" :style="blockMargin">
             <el-descriptions-item label="时间">{{ formatDateTime(logDetail.createTime) }}</el-descriptions-item>

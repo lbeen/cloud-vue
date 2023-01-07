@@ -1,13 +1,15 @@
 <template>
     <el-scrollbar view-class="tags-div" height="50px">
-        <el-tag
-                v-for="tag in tags"
+        <el-tag v-for="tag in themeConfig.activeTags"
                 :key="tag.title"
                 :closable="tag.closable"
-                style="margin-right: 5px"
-                type="info"
-                @mouseenter="tagMouseenter($event, tag)"
-                @mouseleave="tagMouseleave($event, tag)"
+                style="margin-right: 5px;cursor: pointer"
+                :type="tag.show ? '' :'info'"
+                @mouseenter="tagMouseenter(tag)"
+                @mouseleave="tagMouseleave(tag)"
+                @click="show(tag)"
+                size="large"
+                effect="light"
         >{{ tag.title }}
         </el-tag>
     </el-scrollbar>
@@ -15,19 +17,20 @@
 
 
 <script setup>
-import {reactive} from 'vue'
+import {useThemeConfig} from '@/stores/theme-config'
+import {useRouter} from 'vue-router'
 
-const tags = reactive([])
-for (let i = 0; i < 20; i++) {
-    tags.push({
-        title: 'tag' + (i + 1) + 'tag' + (i + 1),
-        closable: false,
-        selected: false
-    })
+const themeConfig = useThemeConfig()
+const router = useRouter()
+
+const tagMouseenter = tag => tag.closable = true
+const tagMouseleave = tag => tag.closable = false
+const show = tag => {
+    for (const activeTag of themeConfig.activeTags) {
+        activeTag.show = activeTag.path === tag.path;
+    }
+    router.replace(tag.path)
 }
-
-const tagMouseenter = ($event, tag) =>  tag.closable = true
-const tagMouseleave = ($event, tag) =>  tag.closable = true
 </script>
 <style>
 .tags-div {
