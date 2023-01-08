@@ -39,15 +39,33 @@
         </template>
     </page-table>
 
-    <el-drawer v-model="isShowDetail" title="日志详情" size="50%">
-        <el-descriptions :column="3" :style="blockMargin">
-            <el-descriptions-item label="时间">{{ formatDateTime(logDetail.createTime) }}</el-descriptions-item>
-            <el-descriptions-item label="级别">{{ logDetail.level === 0 ? '信息' : '错误' }}</el-descriptions-item>
-            <el-descriptions-item label="服务">{{ logDetail.server }}</el-descriptions-item>
-            <el-descriptions-item label="服务">{{ logDetail.serverIP }}</el-descriptions-item>
-            <el-descriptions-item label="服务">{{ logDetail.serverPort }}</el-descriptions-item>
-            <el-descriptions-item label="服务">{{ logDetail.user }}</el-descriptions-item>
-            <el-descriptions-item label="服务">{{ logDetail.content }}</el-descriptions-item>
+    <el-drawer v-model="isShowDetail" :with-header="false" size="60%">
+        <el-descriptions title="日志详情" direction="vertical" :column="4" border>
+            <el-descriptions-item label="级别" label-align="center" align="center">
+                <el-tag v-if="logDetail.logLevel === 0" effect="dark">信息</el-tag>
+                <el-tag v-else effect="dark" type="danger">错误</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="服务" label-align="center" align="center">
+                {{ logDetail.server }}
+            </el-descriptions-item>
+            <el-descriptions-item label="服务IP" label-align="center" align="center">
+                {{ logDetail.serverIP }}
+            </el-descriptions-item>
+            <el-descriptions-item label="服务端口" label-align="center" align="center">
+                {{ logDetail.serverPort }}
+            </el-descriptions-item>
+            <el-descriptions-item label="用户" label-align="center" align="center">
+                {{ logDetail.operateUser }}
+            </el-descriptions-item>
+            <el-descriptions-item label="客户端IP" label-align="center" align="center">
+                {{ logDetail.clientIP }}
+            </el-descriptions-item>
+            <el-descriptions-item label="时间" label-align="center" align="center" :span="2">
+                {{ formatDateTime(new Date(logDetail.createTime)) }}
+            </el-descriptions-item>
+            <el-descriptions-item label="内容" label-align="center" :span="4">
+                {{ logDetail.logContent }}
+            </el-descriptions-item>
         </el-descriptions>
     </el-drawer>
 </template>
@@ -55,7 +73,7 @@
 <script setup>
 import PageTable from '@/components/common/page-table.vue'
 import {queryLogById, queryLogPage} from '@/api/system/log'
-import {computed, reactive, ref} from 'vue'
+import {reactive, ref} from 'vue'
 import Tips from '@/utils/Tips'
 import {format0OClock, formatDateTime} from '@/utils/date'
 
@@ -89,27 +107,16 @@ const paramFun = () => {
     }
 }
 
-const size = ref('')
-const blockMargin = computed(() => {
-    const marginMap = {
-        large: '32px',
-        default: '28px',
-        small: '24px',
-    }
-    return {
-        marginTop: marginMap[size.value] || marginMap.default,
-    }
-})
 const isShowDetail = ref(false)
 const logDetail = ref({
     createTime: '',
-    level: '',
+    logLevel: '',
     server: '',
     serverPort: '',
     serverIP: '',
     clientIP: '',
-    user: '',
-    content: ''
+    operateUser: '',
+    logContent: ''
 })
 const rowClick = row => queryLogById(row.id, data => {
     logDetail.value = data
