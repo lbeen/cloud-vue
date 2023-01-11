@@ -1,24 +1,15 @@
 <template>
-    <page-table :data-fun="dataFun" :param-fun="paramFun" query-on-load :row-click="rowClick">
+    <page-table :data-fun="queryResourcePage" :param-fun="paramFun" query-on-load>
         <template #query="scope">
             <el-form inline class="demo-form-inline" size="small">
-                <el-form-item label="时间">
-                    <el-date-picker v-model="param.time" type="datetimerange" unlink-panels
-                                    value-format="YYYY-MM-DD HH:mm:ss" range-separator="至"
-                                    start-placeholder="开始时间" end-placeholder="结束时间">
-                    </el-date-picker>
+                <el-form-item label="工厂">
+                    <m-select v-model="param.factory" placeholder="请选择工厂" clearable :items="factories"/>
                 </el-form-item>
-                <el-form-item label="级别">
-                    <el-select v-model="param.level" placeholder="请选择级别" clearable>
-                        <el-option v-for="item in levels" :key="item.value" :label="item.label"
-                                   :value="item.value"/>
-                    </el-select>
+                <el-form-item label="资源类型">
+                    <m-select v-model="param.type" placeholder="请选择资源类型" clearable :items="types"/>
                 </el-form-item>
-                <el-form-item label="用户">
-                    <el-input v-model="param.user" placeholder="请输入用户" clearable/>
-                </el-form-item>
-                <el-form-item label="内容">
-                    <el-input v-model="param.content" placeholder="请输入内容" clearable/>
+                <el-form-item label="资源名称">
+                    <el-input v-model="param.name" placeholder="请输入资源名称" clearable/>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="scope.query">查询</el-button>
@@ -76,39 +67,20 @@ import {queryLogById, queryLogPage} from '@/api/system/log'
 import {reactive, ref} from 'vue'
 import Tips from '@/utils/Tips'
 import {format0OClock, formatDateTime} from '@/utils/date'
+import {queryResourcePage} from '@/api/system/kanban'
+import MSelect from '@/components/common/m-select.vue'
 
-const factories = [{
-
-}]
-const param = reactive({
-    level: '',
-    user: '',
-    content: '',
-    time: [format0OClock(new Date('2022-01-01')), formatDateTime(new Date())]
-})
-
-const levels = [{
-    value: 0,
-    label: '信息',
-}, {
-    value: 1,
-    label: '错误',
-}]
-
-const dataFun = queryLogPage
-const paramFun = () => {
-    if (!param.time[0] || !param.time[1]) {
-        Tips.error('开始结束时间不能为空')
-        return
-    }
-    return {
-        startTime: param.time[0],
-        endTime: param.time[1],
-        level: param.level,
-        user: param.user,
-        content: param.content
-    }
+const factories = {
+    'BS': '保山',
+    'TC': '腾冲'
 }
+const types = ['HTML', 'PPT', 'VIDEO']
+const param = reactive({
+    factory: '',
+    type: '',
+    name: ''
+})
+const paramFun = () => param
 
 const isShowDetail = ref(false)
 const logDetail = ref({

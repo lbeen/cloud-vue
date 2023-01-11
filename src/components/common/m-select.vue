@@ -1,40 +1,56 @@
 <template>
-    <el-select v-model="queryParam.factory" clearable placeholder="工厂" style="width: 100px">
-        <el-option v-for="(v, k) in selectItems" :key="k" :value="k" :label="v"></el-option>
+    <el-select v-model="state.value" :clearable="props.clearable" :placeholder="props.placeholder">
+        <el-option v-for="item in state.selectItems" :key="item.value" :value="item.value" :label="item.label"/>
     </el-select>
 </template>
 
 <script setup>
+import {reactive, watch} from 'vue'
+
 const props = defineProps({
-    items: Array || Object
+    modelValue: [String, Number],
+    items: [Array, Object],
+    placeholder: String,
+    clearable: {
+        type: Boolean,
+        default: false
+    }
 })
 
-const selectItems = []
-if (props.items) {
-    if (props.items instanceof Array) {
-        for (let item of props.items) {
-            if (item instanceof Object) {
-                selectItems.push(item)
-            } else {
-                selectItems.push({
-                    label:item,
-                    value:item
+const state = reactive({
+    selectItems: [],
+    value: props.modelValue
+})
+const createSelectItems = () => {
+    const newItems = []
+    if (props.items) {
+        if (props.items instanceof Array) {
+            for (let item of props.items) {
+                if (item instanceof Object) {
+                    newItems.push(item)
+                } else {
+                    newItems.push({
+                        label: item,
+                        value: item
+                    })
+                }
+            }
+        } else {
+            for (const key in props.items) {
+                newItems.push({
+                    label: props.items[key],
+                    value: key
                 })
             }
         }
-    } else {
-        for (const key in props.items) {
-            selectItems.push({
-                label:props.items[key],
-                value:key
-            })
-        }
     }
+    state.selectItems = newItems
 }
+createSelectItems()
+watch(() => props.items, createSelectItems, {deep: true})
 
+const emit = defineEmits(['update:modelValue'])
+watch(() => state.value, newValue => emit('update:modelValue', newValue))
 
+watch(() => props.modelValue, newValue => state.value = newValue)
 </script>
-
-<style scoped>
-
-</style>

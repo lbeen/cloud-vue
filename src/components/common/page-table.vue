@@ -116,7 +116,9 @@ onMounted(() => {
     const queryPart = document.getElementById(queryPartId)
     const paginationPart = document.getElementById(paginationPartId)
     tableData.tableMaxHeight = window.innerHeight - main.offsetTop - queryPart.offsetHeight - paginationPart.offsetHeight - 10
-    refresh()
+    if (props.queryOnLoad) {
+        refresh()
+    }
 })
 </script>
 <style scoped>

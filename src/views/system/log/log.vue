@@ -1,5 +1,5 @@
 <template>
-    <page-table :data-fun="dataFun" :param-fun="paramFun" query-on-load :row-click="rowClick">
+    <page-table :data-fun="queryLogPage" :param-fun="paramFun" :row-click="rowClick">
         <template #query="scope">
             <el-form inline class="demo-form-inline" size="small">
                 <el-form-item label="时间">
@@ -9,10 +9,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="级别">
-                    <el-select v-model="param.level" placeholder="请选择级别" clearable>
-                        <el-option v-for="item in levels" :key="item.value" :label="item.label"
-                                   :value="item.value"/>
-                    </el-select>
+                    <m-select v-model="param.level" placeholder="请选择级别" clearable :items="levels"/>
                 </el-form-item>
                 <el-form-item label="用户">
                     <el-input v-model="param.user" placeholder="请输入用户" clearable/>
@@ -43,22 +40,22 @@
         <el-descriptions title="日志详情" :column="4" border direction="vertical">
             <el-descriptions-item label="日志等级" label-align="center" align="center">
                 <el-tag v-if="logDetail.logLevel === 0">信息</el-tag>
-                <el-tag v-else  effect="dark" type="danger">错误</el-tag>
+                <el-tag v-else effect="dark" type="danger">错误</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="服务" label-align="center" align="center">
-                {{logDetail.server}}
+                {{ logDetail.server }}
             </el-descriptions-item>
             <el-descriptions-item label="服务IP" label-align="center" align="center">
-                {{logDetail.serverIP}}
+                {{ logDetail.serverIP }}
             </el-descriptions-item>
             <el-descriptions-item label="服务端口" label-align="center" align="center">
-                {{logDetail.serverPort}}
+                {{ logDetail.serverPort }}
             </el-descriptions-item>
             <el-descriptions-item label="用户" label-align="center" align="center">
-                {{logDetail.operateUser}}
+                {{ logDetail.operateUser }}
             </el-descriptions-item>
             <el-descriptions-item label="客户端IP" label-align="center" align="center">
-                {{logDetail.clientIP}}
+                {{ logDetail.clientIP }}
             </el-descriptions-item>
             <el-descriptions-item label="时间" label-align="center" align="center" :span="2">
                 {{ formatDateTime(new Date(logDetail.createTime)) }}
@@ -76,6 +73,7 @@ import {queryLogById, queryLogPage} from '@/api/system/log'
 import {computed, reactive, ref} from 'vue'
 import Tips from '@/utils/Tips'
 import {format0OClock, formatDateTime} from '@/utils/date'
+import MSelect from '@/components/common/m-select.vue'
 
 const param = reactive({
     level: '',
@@ -86,13 +84,12 @@ const param = reactive({
 
 const levels = [{
     value: 0,
-    label: '信息',
+    label: '信息'
 }, {
     value: 1,
-    label: '错误',
+    label: '错误'
 }]
 
-const dataFun = queryLogPage
 const paramFun = () => {
     if (!param.time[0] || !param.time[1]) {
         Tips.error('开始结束时间不能为空')
@@ -107,17 +104,6 @@ const paramFun = () => {
     }
 }
 
-const size = ref('')
-const blockMargin = computed(() => {
-    const marginMap = {
-        large: '32px',
-        default: '28px',
-        small: '24px',
-    }
-    return {
-        marginTop: marginMap[size.value] || marginMap.default,
-    }
-})
 const isShowDetail = ref(false)
 const logDetail = ref({
     createTime: '',
@@ -135,13 +121,3 @@ const rowClick = row => queryLogById(row.id, data => {
     console.log(data)
 })
 </script>
-
-<style scoped>
-.my-label {
-    background: var(--el-color-success-light-9);
-}
-
-.my-content {
-    background: var(--el-color-danger-light-9);
-}
-</style>

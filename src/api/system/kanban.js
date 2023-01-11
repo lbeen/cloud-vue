@@ -1,4 +1,4 @@
-import {ajaxGet, ajaxPost} from '@/api/axios'
+import {ajaxGet} from '@/api/api'
 
 export function queryResourcePage(param, callback) {
     ajaxGet('system/kanban/queryResourcePage', param, callback)
