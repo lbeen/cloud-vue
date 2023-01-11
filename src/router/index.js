@@ -6,7 +6,7 @@ import {useThemeConfig} from '@/stores/theme-config'
 const staticRoutes = [{
     path: '/login',
     name: 'login',
-    component: () => import('@/views/system/login.vue'),
+    component: () => import('@/views/login.vue'),
     meta: {
         title: '登录',
     },
