@@ -118,6 +118,5 @@ const logDetail = ref({
 const rowClick = row => queryLogById(row.id, data => {
     logDetail.value = data
     isShowDetail.value = true
-    console.log(data)
 })
 </script>

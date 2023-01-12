@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="state.value" :clearable="props.clearable" :placeholder="props.placeholder">
+    <el-select v-model="state.value" :clearable="clearable" :placeholder="placeholder">
         <el-option v-for="item in state.selectItems" :key="item.value" :value="item.value" :label="item.label"/>
     </el-select>
 </template>

@@ -9,7 +9,7 @@
                 <span>主页</span>
             </template>
         </el-menu-item>
-        <sub-menu v-for="menu in auth.menus" :menu="menu"/>
+        <sub-menu v-for="(menu, index) in auth.menus" :menu="menu" :index="index.toString()"/>
     </el-menu>
 </template>
 
