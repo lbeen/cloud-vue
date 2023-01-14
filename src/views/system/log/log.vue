@@ -23,16 +23,16 @@
             </el-form>
         </template>
         <template #column>
-            <el-table-column label="序号" prop="rn" align="center" width="60px"></el-table-column>
-            <el-table-column label="时间" prop="create_time" align="center" width="165px"></el-table-column>
-            <el-table-column label="服务" prop="server" align="center" width="75px"></el-table-column>
-            <el-table-column label="用户" prop="operate_user" align="center" width="90px"></el-table-column>
+            <el-table-column label="序号" prop="rn" align="center" width="60px"/>
+            <el-table-column label="时间" prop="create_time" align="center" width="165px"/>
+            <el-table-column label="服务" prop="server" align="center" width="75px"/>
+            <el-table-column label="用户" prop="operate_user" align="center" width="90px"/>
             <el-table-column label="级别" align="center" width="70px">
                 <template v-slot="scope">
                     {{ scope.row.log_level === 0 ? '信息' : '错误' }}
                 </template>
             </el-table-column>
-            <el-table-column label="内容" align="center" prop="log_content"></el-table-column>
+            <el-table-column label="内容" align="center" prop="log_content"/>
         </template>
     </page-table>
 
@@ -70,7 +70,7 @@
 <script setup>
 import PageTable from '@/components/common/page-table.vue'
 import {queryLogById, queryLogPage} from '@/api/system/log'
-import {computed, reactive, ref} from 'vue'
+import {reactive, ref} from 'vue'
 import Tips from '@/utils/Tips'
 import {format0OClock, formatDateTime} from '@/utils/date'
 import MSelect from '@/components/common/m-select.vue'

@@ -12,13 +12,13 @@
                     <el-input v-model="param.name" placeholder="请输入资源名称" clearable/>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="scope.query">查询</el-button>
+                    <el-button type="primary" @click="scope.query" id="queryButton">查询</el-button>
                     <el-button type="success" @click="openEdit('')">新增</el-button>
                 </el-form-item>
             </el-form>
         </template>
         <template #column>
-            <el-table-column label="序号" type="index" width="60px"></el-table-column>
+            <el-table-column label="序号" type="index" width="60px"/>
             <el-table-column label="工厂" align="center" width="60px">
                 <template v-slot="scope">{{ factories[scope.row.factory] }}</template>
             </el-table-column>
@@ -30,10 +30,10 @@
                     </el-link>
                 </template>
             </el-table-column>
-            <el-table-column label="类型" prop="type" align="center" width="100px"></el-table-column>
-            <el-table-column label="位置" prop="location" align="center"></el-table-column>
-            <el-table-column label="数量" prop="count" align="center" width="100px"></el-table-column>
-            <el-table-column label="时长" prop="duration" align="center" width="100px"></el-table-column>
+            <el-table-column label="类型" prop="type" align="center" width="100px"/>
+            <el-table-column label="位置" prop="location" align="center"/>
+            <el-table-column label="数量" prop="count" align="center" width="100px"/>
+            <el-table-column label="时长" prop="duration" align="center" width="100px"/>
             <el-table-column label="操作" align="center" width="100px">
                 <template v-slot="scope">
                     <el-button type="primary" @click="openEdit(scope.row)">编 辑</el-button>
@@ -43,60 +43,50 @@
     </page-table>
 
     <el-dialog :title="editTitle" v-model="isShowEdit" :close-on-click-modal="false" width="600px">
-        <el-form label-width="80px">
+        <el-form :model="formData.data" :rules="formData.rules" label-width="80px" ref="form">
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="工厂">
-                        <el-select v-model="editData.factory" clearable placeholder="工厂">
-                            <el-option v-for="(v, k) in factories" :key="k" :value="k" :label="v"></el-option>
-                        </el-select>
+                    <el-form-item label="工厂" prop="factory">
+                        <m-select v-model="formData.data.factory" placeholder="请选择工厂" :items="factories"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="资源名称">
-                        <el-input v-model="editData.name" placeholder="资源名称"></el-input>
+                    <el-form-item label="资源名称" prop="name">
+                        <el-input v-model="formData.data.name" placeholder="资源名称"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="资源类型">
-                        <el-select v-model="editData.type" clearable placeholder="资源类型"
-                                   @change="editTypeChange">
-                            <el-option v-for="item in types" :key="item" :value="item" :label="item"></el-option>
-                        </el-select>
+                    <el-form-item label="资源类型" prop="type">
+                        <m-select v-model="formData.data.type" placeholder="请选择资源类型" clearable :items="types"/>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row v-if="editData.type === 'HTML'" :gutter="20">
+            <el-row v-if="formData.data.type === 'HTML'" :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="资源位置">
-                        <el-input type="textarea" v-model="editData.location"
-                                  placeholder="内部链接或是外部链接"></el-input>
+                    <el-form-item label="资源位置" prop="location">
+                        <el-input type="textarea" v-model="formData.data.location"
+                                  placeholder="内部链接或是外部链接"/>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row v-else-if="editData.type === 'PPT' || editData.type === 'VIDEO'" :gutter="20">
+            <el-row v-if="formData.data.type === 'PPT' || formData.data.type === 'VIDEO'" :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="资源位置">
-                        <el-select v-model="editData.location" placeholder="视频或PPT目录">
-                            <el-option v-for="item in locations" :key="item" :value="item"
-                                       :label="item"></el-option>
-                        </el-select>
+                    <el-form-item label="资源位置" prop="location">
+                        <m-select v-model="formData.data.location" placeholder="视频或PPT目录" :items="locations"/>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row :gutter="20">
+            <el-row v-if="formData.data.type === 'PPT' || formData.data.type === 'VIDEO'" :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="资源数量">
-                        <el-input-number v-model="editData.count" :min="0" :step="1"
-                                         :step-strictly="true"></el-input-number>
+                    <el-form-item label="资源数量" prop="count">
+                        <el-input-number v-model="formData.data.count" :min="0" :step="1" step-strictly/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="资源时长">
-                        <el-input-number v-model="editData.duration" :min="0" :step="1"
-                                         :step-strictly="true"></el-input-number>
+                    <el-form-item label="资源时长" prop="duration">
+                        <el-input-number v-model="formData.data.duration" :min="0" :step="1" step-strictly/>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -125,14 +115,8 @@ const param = reactive({
     name: ''
 })
 const paramFun = () => param
+const getResourceLink2 = () => ''
 
-const list = ref([])
-const queryParam = ref({
-    factory: '',
-    name: '',
-    type: ''
-})
-const isShowEdit = ref(false)
 const formData = reactive({
     data: {
         id: '',
@@ -140,8 +124,8 @@ const formData = reactive({
         type: '',
         name: '',
         location: '',
-        count: '',
-        duration: ''
+        count: 0,
+        duration: 0
     },
     rules: {
         factory: [{
@@ -159,43 +143,39 @@ const formData = reactive({
             message: '请选择资源类型',
             trigger: 'blur'
         }],
-        type: [{
+        location: [{
             required: true,
-            message: '请选择资源类型',
+            message: '请选择或输入资源类型',
             trigger: 'blur'
+        }],
+        count: [{
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('请输入资源数量'))
+                }
+                callback()
+            }
+        }],
+        duration: [{
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('请输入资源时长'))
+                }
+                callback()
+            }
         }]
     }
 })
 
-
-
-const editTitle = ref('')
-const editData = ref({
-    id: '',
-    factory: '',
-    type: '',
-    name: '',
-    location: '',
-    count: '',
-    duration: ''
-})
+const isShowEdit = ref(false)
 const locations = ref([])
-
-const query = () => queryResourcePage(queryParam.value, data => list.value = data)
-const getResourceLink2 = (type, location, count, duration) => {
-    return getResourceLink(type, location, count, duration)
-}
-const editTypeChange = value => {
-    this.editData.location = ''
-    if (value !== 'HTML') {
-        getLocations({type: value}, data => this.locations = data)
-    }
-}
+const editTitle = ref('')
 const openEdit = item => {
     if (item) {
-        editTypeChange(item.type)
         editTitle.value = '修改'
-        editData.value = {
+        formData.data = {
             id: item.id,
             factory: item.factory,
             type: item.type,
@@ -206,62 +186,28 @@ const openEdit = item => {
         }
     } else {
         editTitle.value = '新增'
-        editData.value = {
+        formData.data = {
             id: '',
             factory: '',
             type: '',
             name: '',
             location: '',
-            count: '',
-            duration: ''
+            count: 0,
+            duration: 0
         }
     }
     isShowEdit.value = true
 }
+
+const form = ref(null)
 const save = () => {
-    if (!editData.value.factory) {
-        alertError('工厂不能为空')
-        return
-    }
-    if (!editData.value.type) {
-        alertError('资源类型不能为空')
-        return
-    }
-    if (!editData.value.name) {
-        alertError('资源名称不能为空')
-        return
-    }
-    if (editData.value.type === 'VIDEO') {
-        if (!editData.value.location || editData.value.location.length < 0) {
-            alertError('资源位置为必填项')
-            return
+    form.value.validate(valid => {
+        if (valid) {
+            saveResource(formData.data, () => {
+                document.getElementById('queryButton').click()
+                isShowEdit.value = false
+            })
         }
-    } else if (!editData.value.location) {
-        alertError('资源位置不能为空')
-        return
-    }
-    if (!editData.value.count) {
-        alertError('资源数量不能为空')
-        return
-    }
-    if (editData.value.type !== 'HTML' && !editData.value.duration) {
-        alertError('资源时长不能为空')
-        return
-    }
-    const param = {
-        id: editData.value.id,
-        factory: editData.value.factory,
-        type: editData.value.type,
-        name: editData.value.name,
-        location: editData.value.location,
-        count: editData.value.count,
-        duration: editData.value.duration,
-    }
-    saveResource(param, () => {
-        query()
-        isShowEdit.value = false
     })
 }
-
-query()
 </script>

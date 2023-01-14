@@ -1,7 +1,7 @@
-import {ajaxGet} from '@/api/api'
+import {ajaxGet, ajaxPost} from '@/api/api'
 
-export function queryResourcePage(param, callback) {
-    ajaxGet('system/kanban/queryResourcePage', param, callback)
+export function queryResourcePage(param, callback, errorCallback) {
+    ajaxGet('system/kanban/queryResourcePage', param, callback, errorCallback)
 }
 
 export function saveResource(param, callback) {

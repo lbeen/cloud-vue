@@ -10,6 +10,13 @@ const staticRoutes = [{
     meta: {
         title: '登录',
     },
+}, {
+    path: '/kanban',
+    name: 'kanban',
+    component: () => import('@/views/kanban/cockpit/cockpit-machine.vue'),
+    meta: {
+        title: '看板'
+    }
 }]
 
 const menuRoute = getMenuRoute()
@@ -36,8 +43,8 @@ router.beforeEach((to, from, next) => {
     }
 
     useThemeConfig().addTag({
-        path:to.fullPath,
-        title:to.meta.title
+        path: to.fullPath,
+        title: to.meta.title
     })
     next()
 })

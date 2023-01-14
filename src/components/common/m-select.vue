@@ -1,5 +1,5 @@
 <template>
-    <el-select v-model="state.value" :clearable="clearable" :placeholder="placeholder">
+    <el-select v-model="state.value" :clearable="clearable" :placeholder="placeholder" @change="change">
         <el-option v-for="item in state.selectItems" :key="item.value" :value="item.value" :label="item.label"/>
     </el-select>
 </template>
@@ -14,7 +14,8 @@ const props = defineProps({
     clearable: {
         type: Boolean,
         default: false
-    }
+    },
+    selectChange:Function
 })
 
 const state = reactive({
@@ -53,4 +54,10 @@ const emit = defineEmits(['update:modelValue'])
 watch(() => state.value, newValue => emit('update:modelValue', newValue))
 
 watch(() => props.modelValue, newValue => state.value = newValue)
+
+const change = value => {
+    if (props.selectChange) {
+        props.selectChange(value)
+    }
+}
 </script>

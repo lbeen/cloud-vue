@@ -81,7 +81,7 @@ const refresh = () => {
         tableData.count = data.count
         tableData.list = data.list
         changeQueryDisabled(false)
-    }, () => changeQueryDisabled(false))
+    }, () => changeQueryDisabled(false), () => changeQueryDisabled(false))
 }
 
 const changeQueryDisabled = disabled => {
@@ -100,7 +100,7 @@ const currentChange = page => {
     refresh()
 }
 
-const prevClick = page => {
+const prevClick = () => {
     tableData.page--
     refresh()
 }
