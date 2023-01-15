@@ -4,7 +4,7 @@
 
 <script setup>
 import CockpitEchartsDialog from '@/components/kanban/cockpit/base/cockpit-echarts-dialog.vue'
-import {getMaintenanceTimeByEquipment} from '@/api/cockpit/machine-cockpit'
+import {getMaintenanceTimeByEquipment} from '@/api/kanban/machine-cockpit'
 import {ref} from 'vue'
 
 const props = defineProps({

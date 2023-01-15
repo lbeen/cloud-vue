@@ -29,7 +29,7 @@ export const useAuth = defineStore('auth', {
     persist: true
 })
 
-export function getMenuRoute() {
+export function  getMenusFromStorage(){
     const auth = window.localStorage.getItem('auth')
     if (!auth) {
         return []
@@ -38,43 +38,5 @@ export function getMenuRoute() {
     if (!menus || menus.length === 0) {
         return []
     }
-    const children = [{
-        path: '/index',
-        name: '/index',
-        component: () => import('../views/index.vue'),
-        meta: {
-            title: '主页'
-        }
-    }]
-    for (let menu of menus) {
-        addMenuAndRoute(children, menu)
-    }
-    return {
-        path: '/',
-        name: '',
-        redirect: '/index',
-        component: () => import('@/layout/menu/menu-layout.vue'),
-        children
-    }
-}
-
-function addMenuAndRoute(routes, menu) {
-    if (menu.component) {
-        routes.push({
-            path: menu.path,
-            name: menu.name,
-            component: () => import('..' + menu.component),
-            meta: {
-                title: menu.title,
-                keepAlive: menu.keepAlive
-            }
-        })
-        return
-    }
-    if (!menu.children || menu.children.length === 0) {
-        return
-    }
-    for (let child of menu.children) {
-        addMenuAndRoute(routes, child)
-    }
+    return menus || []
 }

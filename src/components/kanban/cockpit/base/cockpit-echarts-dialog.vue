@@ -6,7 +6,7 @@
 
 <script setup>
 import CockpitDialog from '@/components/kanban/cockpit/base/cockpit-dialog.vue'
-import Echarts from '@/components/kanban/cockpit/base/echarts.vue'
+import Echarts from '@/components/kanban/base/echarts.vue'
 import {nextTick, ref} from 'vue'
 
 const title = ref('')

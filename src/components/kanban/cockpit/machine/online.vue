@@ -4,9 +4,9 @@
 </template>
 
 <script setup>
-import Echarts from '@/components/kanban/cockpit/base/echarts.vue'
+import Echarts from '@/components/kanban/base/echarts.vue'
 import OnlineDialog from '@/components/kanban/cockpit/machine/dialog/online-dialog.vue'
-import {getOnlineByProcess} from '@/api/cockpit/machine-cockpit'
+import {getOnlineByProcess} from '@/api/kanban/machine-cockpit'
 import {inject, ref} from 'vue'
 
 const props = defineProps({

@@ -90,6 +90,7 @@ body {
 .teacher-pie {
     border-bottom: 1px solid #2c768a;
     margin: -5px;
+    padding: 0;
 }
 
 .teacher-pie li {

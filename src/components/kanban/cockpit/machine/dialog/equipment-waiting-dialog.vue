@@ -6,8 +6,8 @@
 
 <script setup>
 import CockpitDialog from '@/components/kanban/cockpit/base/cockpit-dialog.vue'
-import Echarts from '@/components/kanban/cockpit/base/echarts.vue'
-import {getWaitingTimeByEquipment} from '@/api/cockpit/machine-cockpit'
+import Echarts from '@/components/kanban/base/echarts.vue'
+import {getWaitingTimeByEquipment} from '@/api/kanban/machine-cockpit'
 import {nextTick, ref} from 'vue'
 import {getPercent} from '@/assets/common/common'
 

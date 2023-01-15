@@ -4,9 +4,9 @@
 </template>
 
 <script setup>
-import Echarts from '@/components/kanban/cockpit/base/echarts.vue'
+import Echarts from '@/components/kanban/base/echarts.vue'
 import YieldDialog from '@/components/kanban/cockpit/machine/dialog/yield-dialog.vue'
-import {getYieldByProcess} from '@/api/cockpit/machine-cockpit'
+import {getYieldByProcess} from '@/api/kanban/machine-cockpit'
 import {getPercent} from '@/assets/common/common'
 import {inject, ref} from 'vue'
 

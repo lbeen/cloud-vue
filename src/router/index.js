@@ -1,30 +1,15 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {useAuth, getMenuRoute} from '@/stores/auth'
+import {useAuth} from '@/stores/auth'
 import {useThemeConfig} from '@/stores/theme-config'
 
-// 定义静态路由
-const staticRoutes = [{
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login.vue'),
-    meta: {
-        title: '登录',
-    },
-}, {
-    path: '/kanban',
-    name: 'kanban',
-    component: () => import('@/views/kanban/cockpit/cockpit-machine.vue'),
-    meta: {
-        title: '看板'
-    }
-}]
-
-const menuRoute = getMenuRoute()
-const dynamicRoutes = [menuRoute]
+import staticRoutes from '@/router/static'
+import kanbanRoutes from '@/router/kanban'
+import menusRoutes from '@/router/menu'
 
 const routers = [
     ...staticRoutes,
-    ...dynamicRoutes
+    ...kanbanRoutes,
+    ...menusRoutes
 ]
 const router = createRouter({
     history: createWebHistory(),
@@ -32,16 +17,15 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    const auth = useAuth()
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path.startsWith('/kanban')) {
         next()
         return
     }
-    if (!auth.token) {
+
+    if (!useAuth().token) {
         next('/login')
         return
     }
-
     useThemeConfig().addTag({
         path: to.fullPath,
         title: to.meta.title

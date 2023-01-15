@@ -5,11 +5,11 @@
 </template>
 
 <script setup>
-import Echarts from '@/components/kanban/cockpit/base/echarts.vue'
+import Echarts from '@/components/kanban/base/echarts.vue'
 import EquipmentMaintenanceDialog from '@/components/kanban/cockpit/machine/dialog/equipment-maintenance-dialog.vue'
 import EquipmentWaitingDialog from '@/components/kanban/cockpit/machine/dialog/equipment-waiting-dialog.vue'
 
-import {getEquipmentByProcess} from '@/api/cockpit/machine-cockpit'
+import {getEquipmentByProcess} from '@/api/kanban/machine-cockpit'
 import {getPercent} from '@/assets/common/common'
 import {inject, ref} from 'vue'
 

@@ -4,7 +4,7 @@
 
 <script setup>
 import CockpitEchartsDialog from '@/components/kanban/cockpit/base/cockpit-echarts-dialog.vue'
-import {getYieldByEquipment} from '@/api/cockpit/machine-cockpit'
+import {getYieldByEquipment} from '@/api/kanban/machine-cockpit'
 import {ref} from 'vue'
 
 const props = defineProps({
