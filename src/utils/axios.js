@@ -47,8 +47,10 @@ instance.interceptors.response.use(response => {
 })
 
 function jumpToLogin() {
-    auth.removeToken()
-    Tips.alert('未登录或者登录过期，请重新登录', () => router.replace('/login'))
+    Tips.alert({
+        message:'未登录或者登录过期，请重新登录',
+        okFun: () => router.replace('/login')
+    })
 }
 
 export default instance

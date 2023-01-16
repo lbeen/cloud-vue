@@ -18,13 +18,33 @@ function error(message) {
     })
 }
 
-function alert(message, okFun, title, okText) {
-    ElMessageBox.alert(message, title || '提示', {
-        confirmButtonText: okText || '确定',
-        callback: () => {
-            if (okFun) {
-                okFun()
-            }
+function alert(option) {
+    ElMessageBox.alert(option.message, option.title || '提示', {
+        confirmButtonText: option.confirmButtonText || '确定',
+        type: option.type || 'warning',
+    }).then(() => {
+        if (option.okFun) {
+            option.okFun()
+        }
+    }).catch(() => {
+        if (option.okFun) {
+            option.okFun()
+        }
+    })
+}
+
+function confirm(option) {
+    ElMessageBox.confirm(option.message, option.title || '提示', {
+        confirmButtonText: option.confirmButtonText || '确定',
+        cancelButtonText: option.cancelButtonText || '取消',
+        type: option.type || 'warning',
+    }).then(() => {
+        if (option.okFun) {
+            option.okFun()
+        }
+    }).catch(() => {
+        if (option.cancelFun) {
+            option.cancelFun()
         }
     })
 }
@@ -32,5 +52,6 @@ function alert(message, okFun, title, okText) {
 export default {
     success,
     error,
-    alert
+    alert,
+    confirm
 }

@@ -1,5 +1,6 @@
 import instance from '@/utils/axios'
 import Tips from '@/utils/Tips'
+import qs from 'qs'
 
 /**
  * GET获取数据
@@ -13,6 +14,13 @@ export function ajaxGet(url, params, callback, errorCallback) {
  */
 export function ajaxPost(url, data, callback, errorCallback) {
     handlePromise(instance.post(url, data), callback, errorCallback)
+}
+
+/**
+ * post提交数据
+ */
+export function ajaxPostParam(url, data, callback, errorCallback) {
+    handlePromise(instance.post(url, qs.stringify(data)), callback, errorCallback)
 }
 
 function handlePromise(promise, callback, errorCallback) {

@@ -18,25 +18,25 @@
             </el-form>
         </template>
         <template #column>
-            <el-table-column label="序号" type="index" width="60px"/>
+            <el-table-column label="序号" type="rn" width="60px"/>
             <el-table-column label="工厂" align="center" width="60px">
                 <template v-slot="scope">{{ factories[scope.row.factory] }}</template>
             </el-table-column>
             <el-table-column label="名称" align="center" width="200px">
                 <template v-slot="scope">
-                    <el-link type="primary" target="_blank"
-                             :href="getResourceLink2(scope.row.type, scope.row.location, scope.row.count, scope.row.duration)">
-                        {{ scope.row.name }}
+                    <el-link type="primary" target="_blank" :href="scope.row.resource_location">
+                        {{ scope.row.resource_name }}
                     </el-link>
                 </template>
             </el-table-column>
-            <el-table-column label="类型" prop="type" align="center" width="100px"/>
-            <el-table-column label="位置" prop="location" align="center"/>
-            <el-table-column label="数量" prop="count" align="center" width="100px"/>
-            <el-table-column label="时长" prop="duration" align="center" width="100px"/>
-            <el-table-column label="操作" align="center" width="100px">
+            <el-table-column label="类型" prop="resource_type" align="center" width="100px"/>
+            <el-table-column label="位置" prop="resource_location" align="center"/>
+            <el-table-column label="数量" prop="resource_count" align="center" width="100px"/>
+            <el-table-column label="时长" prop="resource_duration" align="center" width="100px"/>
+            <el-table-column label="操作" align="center" width="180px">
                 <template v-slot="scope">
-                    <el-button type="primary" @click="openEdit(scope.row)">编 辑</el-button>
+                    <el-button type="primary" @click="openEdit(scope.row)">编辑</el-button>
+                    <el-button type="danger" @click="deleteItem(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </template>
@@ -101,8 +101,9 @@
 <script setup>
 import PageTable from '@/components/common/page-table.vue'
 import {reactive, ref} from 'vue'
-import {queryResourcePage, saveResource} from '@/api/system/kanban'
+import {deleteResource, queryResourcePage, saveResource} from '@/api/system/kanban'
 import MSelect from '@/components/common/m-select.vue'
+import Tips from '@/utils/Tips'
 
 const factories = {
     'BS': '保山',
@@ -178,11 +179,11 @@ const openEdit = item => {
         formData.data = {
             id: item.id,
             factory: item.factory,
-            type: item.type,
-            name: item.name,
-            location: item.location,
-            count: item.count,
-            duration: item.duration
+            type: item.resource_type,
+            name: item.resource_name,
+            location: item.resource_location,
+            count: item.resource_count,
+            duration: item.resource_duration
         }
     } else {
         editTitle.value = '新增'
@@ -208,6 +209,13 @@ const save = () => {
                 isShowEdit.value = false
             })
         }
+    })
+}
+const deleteItem = row => {
+    Tips.confirm({
+        message:'确定删除【' + row.resource_name + '】？',
+        confirmButtonText:'删除',
+        okFun:() => deleteResource(row.id, () => document.getElementById('queryButton').click())
     })
 }
 </script>
